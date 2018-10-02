@@ -1,0 +1,25 @@
+<!<!DOCTYPE html>
+<html>
+
+<head>
+<!-- <link rel="stylesheet" href="css/mystyle.css" /> -->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css" type="text/css" />
+</head>
+
+<body>
+    <div class="container">
+        <div>Hello</div>
+        <%= new Date() %>
+        <% for ( let i=0; i < items.length; i++ ) { %>
+        <li>
+            <%= items[i].name %>
+        </li>
+        <% } %>
+        <form action="/add" method="post">
+            <input type="text" name="newT">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+
+</html>
