@@ -5,7 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // const itemsList = [{ name: 'as11', desc: 'aban1' }, { name: 'as2', desc: '2' },
 // { name: '3', desc: '3' }, { name: '4', desc: '4aban' }]
