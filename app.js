@@ -20,7 +20,7 @@ app.set('views', path.join(__dirname, './views'));
 
 
 app.use( require('./main'));
-app.use('/api', require('./main'));
+//app.use('/api', require('./main'));
 
 // app.get('/', (req, res) =>
 //     // res.send('Hello World!');
