@@ -12,7 +12,14 @@ const client = new Client({
   ssl: true,
 });
 
-client.connect();
+client.connect((err) => {
+    if (err) {
+        console.log("err" + JSON.stringify(err, undefined, 2));
+
+    } else {
+        console.log("connected db");
+
+    });
 
 
 
