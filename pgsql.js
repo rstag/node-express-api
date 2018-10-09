@@ -1,9 +1,9 @@
-const mysql = require('mysql');
+// const mysql = require('mysql');
 const express = require('express');
 const router = express.Router();
-const app = express();
-const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
+// const app = express();
+// const bodyParser = require('body-parser');
+// const port = process.env.PORT || 3000;
 
 const { Client } = require('pg');
 
