@@ -17,7 +17,7 @@ router.post('/add', (req, res) => {
         name: data,
         desc: data + '' + data
     });
-    res.redirect('/');
+    res.redirect('/api');
 });
 
 module.exports = router;
