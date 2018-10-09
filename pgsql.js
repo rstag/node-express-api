@@ -1,131 +1,85 @@
-// const mysql = require('mysql');
 const express = require('express');
-const router = express.Router();
-// const app = express();
-// const bodyParser = require('body-parser');
-// const port = process.env.PORT || 3000;
+// var bodyParser = require('body-parser');
+const pg = require('pg');
+const routers = express.Router();
 
-const { Client } = require('pg');
+// var app = express();
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+// app.set('port', process.env.PORT || 5000);
 
-client.connect((err) => {
-    if (err) {
-        console.log("err" + JSON.stringify(err, undefined, 2));
+// app.use(express.static('public'));
+// app.use(bodyParser.json());
 
-    } else {
-        console.log("connected db");
+// app.get('/getdb', function (req, res) {
+//     pg.connect(process.env.DATABASE_URL, function (err, conn, done) {
+//         // watch for any connect issues
+//         if (err) console.log(err);
+//         conn.query(
+//             'UPDATE salesforce.Contact SET Phone = $1, MobilePhone = $1 WHERE LOWER(FirstName) = LOWER($2) AND LOWER(LastName) = LOWER($3) AND LOWER(Email) = LOWER($4)',
+//             [req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
+//             function (err, result) {
+//                 if (err != null || result.rowCount == 0) {
+//                     conn.query('INSERT INTO salesforce.Contact (Phone, MobilePhone, FirstName, LastName, Email) VALUES ($1, $2, $3, $4, $5)',
+//                         [req.body.phone.trim(), req.body.phone.trim(), req.body.firstName.trim(), req.body.lastName.trim(), req.body.email.trim()],
+//                         function (err, result) {
+//                             done();
+//                             if (err) {
+//                                 res.status(400).json({ error: err.message });
+//                             }
+//                             else {
+//                                 // this will still cause jquery to display 'Record updated!'
+//                                 // eventhough it was inserted
+//                                 res.json(result);
+//                             }
+//                         });
+//                 }
+//                 else {
+//                     done();
+//                     res.json(result);
+//                 }
+//             }
+//         );
+//     });
+// });
 
+app.get('/create', (req, res) => {
+    pg.connect(process.env.DATABASE_URL, function (err, conn, done) {
+        // watch for any connect issues
+        if (err) {
+            res.send('Hello World error!'+err);
+            console.log(err);
+        }
+        conn.query('create table employees (id int,name varchar(255),salery varchar(255),address varchar(255))', function (err, result) {
+            done();
+            if (err) {
+                res.status(400).json({ error: err.message });
+            }
+            else {
+                // this will still cause jquery to display 'Record updated!'
+                // eventhough it was inserted
+                conn.query('insert into employees values(?,?,?,?);', [34, 'hgjg', 'cggh', 'hhh'], function (err, result) {
+                    done();
+                    if (err) {
+                        res.status(400).json({ error: err.message });
+                    }
+                    else {
+                        // this will still cause jquery to display 'Record updated!'
+                        // eventhough it was inserted
+
+
+
+                        res.json(result);
+                    }
+                });
+
+
+                res.json(result);
+            }
+        });
     });
+})
 
-
-
-router.get('/', (req, res) => {
-    client.query('create table employees (id int,name varchar(255),salery varchar(255),address varchar(255));', (err, res) => {
-        console.log("inside");
-        if (err) throw err;
-        for (let row of res.rows) {
-            res.send(rows);
-          console.log(JSON.stringify(row));
-        }
-        client.end();
-      });
-      res.send('Hello World!');
-});
-
-router.get('/employee', (req, res) => {
-
-    client.query('select * from employees;', (err, res) => {
-        if (err) throw err;
-        for (let row of res.rows) {
-            res.send(rows);
-          console.log(JSON.stringify(row));
-        }
-        client.end();
-      });
-    
-    // mysqlConn.query('select * from employees', (err, rows, fields) => {
-    //     if (!err) {
-    //         res.send(rows);
-    //         console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-    res.send('Hello World emps!');
-});
-
-router.get('/employee/:id', (req, res) => {
-    // mysqlConn.query('select * from employees where id = ?',[req.params.id], (err, rows, fields) => {
-    //     if (!err) {
-    //         res.send(rows);
-    //         // console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-});
-
-router.delete('/employee/:id', (req, res) => {
-    // mysqlConn.query('delete from employees where id = ?',[req.params.id], (err, rows, fields) => {
-    //     if (!err) {
-    //         // res.send(rows);
-    //         console.log('deleted');
-    //         // console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-});
-
-router.post('/employee', (req, res) => {
-    // let emp=req.body;
-    // let sql="set @id = ?;set @name = ?;set @salery = ?;set @address = ?;call EmpAddEdit(@id,@name,@salery,@address);";
-    // mysqlConn.query(sql,[emp.id,emp.name,emp.salery,emp.address], (err, rows, fields) => {
-    //     if (!err) {
-    //         res.send(rows);
-    //         // console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-});
-
-router.put('/employee', (req, res) => {
-    // let emp=req.body;
-    // let sql="set @id = ?;set @name = ?;set @salery = ?;set @address = ?;call EmpAddEdit(@id,@name,@salery,@address);";
-    // mysqlConn.query(sql,[emp.id,emp.name,emp.salery,emp.address], (err, rows, fields) => {
-    //     if (!err) {
-    //         res.send(rows);
-    //         // console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-});
-
-router.post('/newEmployee', (req, res) => {
-    // let emp=req.body;
-    // let sql="insert into employees values(?,?,?,?);";
-    // mysqlConn.query(sql,[emp.id,emp.name,emp.salery,emp.address], (err, rows, fields) => {
-    //     if (!err) {
-    //         res.send(rows);
-    //         // console.log(rows[0].name);
-    //     } else {
-    //         console.log(err);
-    //         // res.redirect('/');
-    //     }
-    // });
-});
-
-// app.listen('3000', () => console.log('server started'));
-
-module.exports = router;
+// app.listen(app.get('port'), function () {
+//     console.log('Express server listening on port ' + app.get('port'));
+// });
+module.exports = routers;
