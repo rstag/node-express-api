@@ -14,24 +14,6 @@ const client = new Client({
 
 client.connect();
 
-// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//   if (err) throw err;
-//   for (let row of res.rows) {
-//     console.log(JSON.stringify(row));
-//   }
-//   client.end();
-// });
-
-// client.query('create table employees (id int,name varchar(255),salery varchar(255),address varchar(255));', (err, res) => {
-//     if (err) throw err;
-//     for (let row of res.rows) {
-//       console.log(JSON.stringify(row));
-//     }
-//     client.end();
-//   });
-
-// app.use(bodyParser.json());
-
 
 
 router.get('/', (req, res) => {
@@ -44,6 +26,7 @@ router.get('/', (req, res) => {
         }
         client.end();
       });
+      res.send('Hello World!');
 });
 
 router.get('/employee', (req, res) => {
@@ -66,6 +49,7 @@ router.get('/employee', (req, res) => {
     //         // res.redirect('/');
     //     }
     // });
+    res.send('Hello World emps!');
 });
 
 router.get('/employee/:id', (req, res) => {
