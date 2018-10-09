@@ -48,6 +48,9 @@ routers.get('/', (req, res) => {
         if (err) {
             res.send('Hello World error!'+err);
             console.log(err);
+        }else{
+            res.send('Hello World error!'+err);
+            console.log("connected");
         }
     //     conn.query('create table employees (id int,name varchar(255),salery varchar(255),address varchar(255))', function (err, result) {
     //         done();
